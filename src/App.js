@@ -1,26 +1,25 @@
-import logo from './logo.svg';
+
 import './App.css';
 import { Global } from '@emotion/react';
 import { Reset } from './styles/Global/reset';
-import { Route, Routes } from 'react-router-dom';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
-import Callback from './study/Callback';
-import PromiseStudy from './study/PromiseStudy';
-
+import Main from './pages/Main/Main';
+import AuthRoute from './components/Routes/AuthRoute/AuthRoute';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
+  
+
   return (
-<>
-    <Global styles={ Reset }></Global>
-    <Routes>
-      <Route exact path="/login" Component={Login}></Route>
-      <Route path="/register" Component={Register}></Route>
-      <Route path="/callback" Component={Callback}></Route>
-      <Route path="/promise" Component={PromiseStudy}></Route>
-      
-    </Routes >
-</>
+    <>
+      <Global styles={ Reset }></Global>
+      <Routes>
+        <Route exact path="/login" element={<AuthRoute path="/login" element={<Login />} /> } />
+        <Route path="/register" element={<AuthRoute path="/register" element={<Register />} /> } />
+        <Route path="/" element={<AuthRoute path="/" element={<Main />} /> } />
+      </Routes>
+    </>
   );
 }
 

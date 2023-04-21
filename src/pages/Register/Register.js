@@ -82,9 +82,6 @@ const errorMsg = css`
     font-size: 12px;
     color: red;
 
-
-
-
 `;
 
 const Register = () => {
@@ -112,8 +109,6 @@ const Register = () => {
 
             const response = await axios.post("http://localhost:8080/auth/signup", JSON.stringify(data), option) //메소드 호출, 무조건 이것부터 실행이 되어져야함 
             setErrorMessages({email:"", password:"", name:""});
-            alert("회원가입 성공")
-            navigate("/login");
             
         }catch(error ){
             setErrorMessages({email:"", password:"", name:"", ...error.response.data.errorData});
