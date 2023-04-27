@@ -5,7 +5,7 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
-import RentalList from '../../components/UI/BookDetail/RentalList/RentalList';
+import RentalList from '../../components/Ui/BookDetail/RentalList/RentalList';
 
 const mainContainer = css`
     padding: 10px;
