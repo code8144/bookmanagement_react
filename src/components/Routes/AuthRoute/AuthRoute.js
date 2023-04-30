@@ -14,8 +14,9 @@ const AuthRoute = ({ path, element }) => {
     const permitAll = ["/login", "/register", "/password/forgot"];
 
     if(!authenticated) {
+        // false라고 해서 로그인이 안된것은 아님 
         const accessToken = localStorage.getItem("accessToken");
-        if(accessToken !== null){
+        if(accessToken !== null){   
             validateToken(accessToken).then((flag) => {
                 setAuthenticated(flag);
             });
@@ -38,3 +39,7 @@ const AuthRoute = ({ path, element }) => {
 };
 
 export default AuthRoute;
+
+
+
+

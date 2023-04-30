@@ -2,7 +2,7 @@
 import { css } from '@emotion/react'
 import React from 'react';
 import { AiOutlineLike } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 
 const cardContainer = css`
     display: flex;
@@ -96,13 +96,14 @@ const like = css`
 const likeIcon = css`
     padding-right: 5px;
 `
-const BookCard = ({ book }) => {
 
+const BookCard = ({ book }) => {
     const navigate = useNavigate();
     const clickHandle = () => {
         navigate("/book/" + book.bookId);
-    }
 
+
+}
     return (
         <div css={cardContainer} onClick={clickHandle}>
             <header css={header}>

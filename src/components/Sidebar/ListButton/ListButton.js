@@ -1,5 +1,5 @@
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+/**@jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import React from 'react';
 
 const list = css`
@@ -9,11 +9,12 @@ const list = css`
     width: 100%;
     padding: 5px;
     cursor: pointer;
-    &:hover {
+    &:hover{
         background-color: #fafafa;
-    }
-`;
 
+    }
+
+`;
 const listIcon = css`
     display: flex;
     justify-content: center;
@@ -21,16 +22,16 @@ const listIcon = css`
     width: 40px;
     height: 40px;
 `;
-
 const listTitle = css`
     display: flex;
     align-items: center;
     font-weight: 600;
+
 `;
 
-const ListButton = ({ children, title, onClick }) => {
+const ListButton = ({children, title, onClick}) => {
     return (
-        <div css={list} onClick={onClick}>
+        <div css={list} onClick ={onClick}>
             <div css={listIcon}>{children}</div>
             <div css={listTitle}>{title}</div>
         </div>

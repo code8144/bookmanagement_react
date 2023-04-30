@@ -1,43 +1,44 @@
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
-import React from 'react';
+/**@jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+import React, { useState } from 'react';
 import { GrFormClose } from 'react-icons/gr';
 import ListButton from './ListButton/ListButton';
-import { BiHome, BiLike, BiListUl, BiLogOut } from "react-icons/bi";
-import { useState } from 'react';
+import { BiHome, BiLike, BiListUl, BiLogOut } from 'react-icons/bi';
 import { useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 
 const sidebar = (isOpen) => css`
     position: absolute;
     display: flex;
-    left: ${isOpen ? "10px" : "-240px"};
+    left: ${isOpen ? "10px;" : "-240px"};
     flex-direction: column;
     border: 1px solid #dbdbdb;
     border-radius: 10px;
     width: 250px;
-    box-shadow: -1px 0px 5px #dbdbdb;
+    box-shadow: -1px 0px 5px gray;  //강사님것은 #dbdbdb
     transition: left 1s ease;
-    background-color: white;
+    background-color: whitesmoke; // 강사님은 white
+
     ${isOpen ? "" : `
-        cursor: pointer;
-    `}
-    
+        cursor:pointer;
+     `}
+    cursor: pointer;
     ${isOpen ? "" : 
-        `&:hover {
-            left: -230px;
-        }`
-    }
-    
+        `&:hover{left: -230px;
+    }`
+}
+   
+
 `;
+
 
 const header = css`
     display: flex;
     align-items: center;
     margin-bottom: 15px;
     padding: 10px;
+    
 `;
-
 const userIcon = css`
     display: flex;
     justify-content: center;
@@ -48,7 +49,7 @@ const userIcon = css`
     height: 45px;
     background-color: #713fff;
     color: white;
-    font-size: 24px;
+    font-size: 30px;
     font-weight: 600;
 `;
 
@@ -56,19 +57,20 @@ const userInfo = css`
     display: flex;
     flex-direction: column;
     justify-content: center;
+
 `;
 
-const userName = css`
+const userName =css`
     font-size: 18px;
     font-weight: 600;
     padding: 5px;
     padding-top: 0;
-`;
 
+`;
 const userEmail = css`
     font-size: 12px;
-`;
 
+`
 const closeButton = css`
     position: absolute;
     top: 10px;
@@ -82,69 +84,73 @@ const closeButton = css`
     height: 18px;
     border-radius: 50%;
     font-size: 12px;
+    background-color: #dbdbdb; //내가 추가한것 
     cursor: pointer;
-    &:active {
+    &:active{
         background-color: #fafafa;
     }
 `;
-
 const main = css`
     padding: 10px;
     border-bottom: 1px solid #dbdbdb;
 `;
-
 const footer = css`
     padding: 10px;
 `;
 
 const Sidebar = () => {
-    const [ isOpen, setIsOpen ] = useState(false);
+    const [isOpen, setIsOpen ]= useState(false); // isopen의 상태에따라서 사이드바가 나오고 숨겨짐 
     const queryClient = useQueryClient();
-
+  
     const sidebarOpenClickHandle = () => {
-        if(!isOpen){
+        if(!isOpen){ //캡쳐링때문에 이벤트기능이 close버튼에 한번더 추가되어 false일때만 true로 변환할수 있게 만들어줌 
             setIsOpen(true);
+
         }
     }
-
     const sidebarCloseClickHandle = () => {
         setIsOpen(false);
     }
-
     const logoutClickHandle = () => {
-        if(window.confirm("로그아웃 하시겠습니까?")) {
+        if(window.confirm("로그아웃 하시겠습니까?")){
             localStorage.removeItem("accessToken");
+            queryClient.invalidateQueries("principal");
+
         }
     }
-
-    if(queryClient.getQueryState("principal").status === "loading"){
-        return <div>loading...</div>
-    }
-
-    const principalData = queryClient.getQueryData("principal").data;
-
+        if(queryClient.getQueryState("principal").status === "loading"){
+            return <div>로딩중...</div>  // 여기서 로딩이 되어야지 principal에 들어있는 권한을 사용할 것인지 권한이 없는지 판별할 수 있음 
+        }
+    const principalData = queryClient.getQueryData("principal").data; 
+    const roles = principalData.authorities.split(",");
+ 
     return (
-        <div css={sidebar(isOpen)} onClick={sidebarOpenClickHandle} >
+        <div  css={sidebar(isOpen)} onClick={ sidebarOpenClickHandle}>
             <header css={header}>
                 <div css={userIcon}>
-                    {principalData.name.substr(0,1)}
+                    {principalData.name.substr(0,1)} {/* 사용자의 이름또는 이메일의 첫글자 하나만 들고오겠다 */} 
                 </div>
                 <div css={userInfo}>
-                    <h1 css={userName}>{principalData.name}</h1>
-                    <p css={userEmail}>{principalData.email}</p>
+                    <h1 css={userName}>{queryClient.getQueryData("principal").data.name}</h1>
+                    <p css={userEmail}>{queryClient.getQueryData("principal").data.email}</p>
                 </div>
-                <div css={closeButton} onClick={sidebarCloseClickHandle} ><GrFormClose /></div>
+                <div css={closeButton} onClick={ sidebarCloseClickHandle}><GrFormClose/></div>
             </header>
             <main css={main}>
-                <ListButton title="Dashboard"><BiHome /></ListButton>
-                <ListButton title="Likes"><BiLike /></ListButton>
-                <ListButton title="Rental"><BiListUl /></ListButton>
+               <ListButton title="Dashboard"><BiHome /></ListButton>
+               <ListButton title="Likes"><BiLike/></ListButton>
+               <ListButton title="Rental"><BiListUl/></ListButton>
+               {roles.includes("ROLE_ADMIN") ? (<ListButton title={"ResigterBookList"}><BiListUl/></ListButton>):""}
             </main>
             <footer css={footer}>
-                <ListButton title="Logout" onClick={logoutClickHandle}><BiLogOut /></ListButton>
+                <ListButton title="Logout" onClick={logoutClickHandle}><BiLogOut/></ListButton>
             </footer>
         </div>
     );
 };
 
 export default Sidebar;
+//비동기에서 실행을 키값을 들고오면 값을 들고 오기전에 뒤에 프로그램이 실행되는 문제가 발생 
+// 전역의 상태로 빼놓고 사용을 하면 이러한 문제가 해결, 전역상태로 빼놓고 값을 수정하면 그와 관련된 정보들은 값들이 수정된다
+// 유즈쿼리문에서는 배열로 사용해야함 -> 키값을 여러개 넣는 상황이 있어서 배열로 사용
+//substr은 갯수를 말한다 글자를 자르는 갯수

@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import { RecoilRoot } from 'recoil';
+import  {RecoilRoot} from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();
@@ -15,7 +15,7 @@ root.render(
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <App />
+        <App />
         </BrowserRouter>
       </QueryClientProvider>
     </RecoilRoot>
